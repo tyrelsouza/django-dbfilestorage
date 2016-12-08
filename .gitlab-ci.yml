@@ -1,0 +1,14 @@
+image: python:2.7
+
+before_script:
+    #- apt-get update -qq && apt-get install -y -qq python python-pip
+    - python --version
+    - pip install -r requirements.txt
+
+types:
+    - test
+
+job_test:
+    type: test
+    script:
+        - python setup.py test
