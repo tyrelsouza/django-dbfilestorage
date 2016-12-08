@@ -10,7 +10,11 @@ Intended to be used in tests, never in production.
 
 ## INSTALLATION
 
-In your project's `settings.py` file, add `'dbfilestorage'` to your `INSTALLED_APPS`:
+```
+pip install django-dbfilestorage
+```
+
+Then in your project's `settings.py` file, add `'dbfilestorage'` to your `INSTALLED_APPS`:
 
 ```python
 INSTALLED_APPS = (
