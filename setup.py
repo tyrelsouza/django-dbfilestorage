@@ -10,13 +10,13 @@ except ImportError:
 
 setup(
     name="django-dbfilestorage",
-    version="0.0.1",
+    version="0.0.2",
     description="Database backed file storage for testing.",
     long_description="Database backed file storage for testing. Stores files as base64 encoded textfields.",
     author="Tyrel Souza",
-    author_email="john.doe@example.com",
-    url="https://gitlab.com/tyrelsouza/django-dbfilestorage",
-    download_url="https://gitlab.com/tyrelsouza/django-dbfilestorage.git",
+    author_email="tyrelsouza@gmail.com",
+    url="https://github.com/tyrelsouza/django-dbfilestorage",
+    download_url="https://github.com/tyrelsouza/django-dbfilestorage.git",
     license="MIT License",
     packages=[
         "dbfilestorage",
