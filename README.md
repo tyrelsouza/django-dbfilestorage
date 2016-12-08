@@ -1,6 +1,5 @@
 # Django-dbfilestorage
 
-
 [![CircleCI](https://circleci.com/gh/tyrelsouza/django-dbfilestorage.svg?style=svg)](https://circleci.com/gh/tyrelsouza/django-dbfilestorage) [![codecov](https://codecov.io/gh/tyrelsouza/django-dbfilestorage/branch/master/graph/badge.svg)](https://codecov.io/gh/tyrelsouza/django-dbfilestorage)
 
 Custom file storage for Django that stores file data and content type in the database.
