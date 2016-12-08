@@ -22,5 +22,5 @@ Use original filename instead, so it honors the "upload_to" parameter.
 CHANGELOG
 =========
 
-2016-12-07 [Tyrel Souza] Update Readme, move to github, gitlab wasn't functioning properly.
-2016-12-07 [Tyrel Souza] Initial commits and basic project setup
+- 2016-12-07 [Tyrel Souza] Update Readme, move to github, gitlab wasn't functioning properly.
+- 2016-12-07 [Tyrel Souza] Initial commits and basic project setup
