@@ -31,9 +31,12 @@ class DBStorage(Storage):
         """
            The save method does most of the 'magic'.
            It stores the contents of the file as a base64 string.
-           It then takes the filename, and tries to get the mimetype from that (for rendering)
-           Then it takes the md5 of the read file and uses that as the "unique" key to access the file.
-           Then it checks if the file exists and if it doesn't, it will create the entry in the database.
+           It then takes the filename, and tries to get the mimetype from that
+            (for rendering)
+           Then it takes the md5 of the read file and uses that as the "unique"
+           key to access the file.
+           Then it checks if the file exists and if it doesn't, it will create
+           the entry in the database.
 
            :return str: the name(md5) to look up the file by.
         """

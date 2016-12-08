@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DBFile',
             fields=[
-                ('name', models.CharField(max_length=100, 
+                ('name', models.CharField(max_length=100,
                                           primary_key=True,
                                           serialize=False)),
                 ('content_type', models.CharField(max_length=100)),
