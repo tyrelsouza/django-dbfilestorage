@@ -12,7 +12,7 @@ from .models import DBFile
 L = logging.getLogger(__name__)
 
 
-class DBStorage(Storage):
+class DBFileStorage(Storage):
     """
         This is the Test Database file upload storage backend.
         This is used so that in our test database we always have uploaded
