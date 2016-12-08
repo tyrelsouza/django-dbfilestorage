@@ -8,7 +8,7 @@ from django.test import TestCase, Client
 from django.test.utils import override_settings
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
-DEFAULT_FILE_STORAGE = "dbfilestorage.storage.DBStorage"
+DEFAULT_FILE_STORAGE = "dbfilestorage.storage.DBFileStorage"
 
 
 @override_settings(DEFAULT_FILE_STORAGE=DEFAULT_FILE_STORAGE)

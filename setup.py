@@ -10,7 +10,7 @@ except ImportError:
 
 setup(
     name="django-dbfilestorage",
-    version="0.0.4",
+    version="0.1.0",
     description="Database backed file storage for testing.",
     long_description="Database backed file storage for testing. Stores files as base64 encoded textfields.",
     author="Tyrel Souza",
