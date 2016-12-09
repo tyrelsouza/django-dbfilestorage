@@ -47,9 +47,15 @@ class SomeClass(models.Model):
 - Store original filename in a field, maybe?
 - Use original filename instead, so it honors the "upload_to" parameter.
 
+## Signing Key
+You can find my signing key at [TyrelSouza.com](https://tyrelsouza.com/blog/pgp-keys/)
+
+I will sign everything with 0x769A1BC78A2DDEE2
 
 ## CHANGELOG
 
+- 2016-12-09 [Tyrel Souza] Add signing key to readme.
+- 2016-12-09 [Tyrel Souza] Update Tests, add some cleanup.
 - 2016-12-08 [Tyrel Souza] Add more documentation.
 - 2016-12-07 [Tyrel Souza] Update Readme, move to github, gitlab wasn't functioning properly.
 - 2016-12-07 [Tyrel Souza] Initial commits and basic project setup
