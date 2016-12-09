@@ -1,4 +1,8 @@
 from django.contrib import admin
 from .models import DBFile
 
-admin.site.register(DBFile)
+
+class DBFileAdmin(admin.ModelAdmin):
+    list_display = ('name', 'content_type')
+
+admin.site.register(DBFile, DBFileAdmin)
