@@ -8,6 +8,20 @@ except ImportError:
     use_setuptools()
     from setuptools import setup
 
+from setuptools import setup, Command
+
+class CleanCommand(Command):
+    """Custom clean command to tidy up the project root."""
+    user_options = []
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+    def run(self):
+        os.system('rm -vrf ./build ./dist ./*.pyc ./*.tgz ./*.egg-info')
+        os.system('rm -vrf htmlcov .coverage')
+        os.system('rm -vrf .DS_Store')
+
 setup(
     name="django-dbfilestorage",
     version="0.1.0",
@@ -41,5 +55,8 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "Topic :: Software Development :: Libraries :: Python Modules",
-    ]
+    ],
+    cmdclass={
+        'clean': CleanCommand,
+    }
 )
