@@ -40,26 +40,14 @@ class DBFileStorage(Storage):
 
            :return str: the name(md5) to look up the file by.
         """
-        ct = None
         if hasattr(content.file, "read"):
             read_data = content.file.read()
         else:
             read_data = content.file.encode('utf8')
         b64 = read_data.encode('base64')
 
-        # Try to get the real content_type if applicable.
-        try:
-            if hasattr(content, 'content_type'):
-                ct = content.content_type
-            elif hasattr(content.file, 'content_type'):
-                ct = content.file.content_type
-        except AttributeError:
-            pass
-
-        # USE mimetypes.guess_type as a fallback.
-        if ct is None:
-            # https://docs.python.org/2/library/mimetypes.html
-            ct = mimetypes.guess_type(name)[0]
+        # USE mimetypes.guess_type as an attempt at getting the content type.
+        ct = mimetypes.guess_type(name)[0]
 
         # After we get the mimetype by name potentially, mangle it.
         name = hashlib.md5(read_data).hexdigest()
@@ -81,7 +69,9 @@ class DBFileStorage(Storage):
 
     def delete(self, name):
         assert name, "The name argument is not allowed to be empty."
-        DBFile.objects.get(pk=name).delete()
+        # name is the Pk, so it will be unique, deleting on the QS so
+        # that it fails silently if the file doesn't exist.
+        DBFile.objects.filter(pk=name).delete()
 
     def exists(self, name):
         return DBFile.objects.filter(pk=name).exists()

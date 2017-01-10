@@ -14,4 +14,12 @@ class DBFile(models.Model):
     b64 = models.TextField()
 
     def __unicode__(self):
-        return unicode(self.name)
+        return u"{name} <{content_type}>".format(
+            name=self.name, content_type=self.content_type)
+
+    def save(self, **kwargs):
+        if self.content_type is None:
+            # If content type guessing fails,
+            # use octet stream as a major fallback
+            self.content_type = "application/octet-stream"
+        super(DBFile, self).save(**kwargs)

@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 import hashlib
 import os
 
 from dbfilestorage.models import DBFile
 
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 from django.test import TestCase, Client
@@ -30,6 +32,15 @@ class DBFileTest(TestCase):
         """ Test that the file storage uploads and puts in DB Properly """
         self.assertTrue(DBFile.objects.filter(name=self.md5).exists())
 
+    def test_content_file(self):
+        """ Test that this code works with ContentFile as well """
+        content_file = ContentFile(u"ΑΔΔGΕΝΕ")
+        content_file_md5 = hashlib.md5(u"ΑΔΔGΕΝΕ".encode('utf8')).hexdigest()
+        default_storage.save("unicode", content_file)
+        unicode_file = DBFile.objects.get(name=content_file_md5)
+        self.assertEqual(unicode(unicode_file),
+            "{} <application/octet-stream>".format(content_file_md5))
+
     def test_no_duplicate_upload(self):
         """ Test that it won't make a new file if it already exists """
         # uploads once in setup already
@@ -40,8 +51,7 @@ class DBFileTest(TestCase):
         """ Test that the DB entry matches what is expected from the file """
         with open(self.filepath, 'rb') as f:
             dbf = DBFile.objects.get(name=self.md5)
-            self.assertEqual(dbf.b64.decode("base64"),
-                             f.read())
+            self.assertEqual(dbf.b64.decode("base64"), f.read())
             self.assertEqual(dbf.content_type, 'image/jpeg')
 
     def test_open(self):
@@ -59,6 +69,10 @@ class DBFileTest(TestCase):
         self.assertTrue(DBFile.objects.filter(name=self.md5).exists())
         default_storage.delete(self.md5)
         self.assertFalse(DBFile.objects.filter(name=self.md5).exists())
+        # Also test that calling delete on something that doesn't exist,
+        # errors silently
+        self.assertFalse(DBFile.objects.filter(name="Nothing").exists())
+        default_storage.delete("Nothing")
 
     def test_path(self):
         """ Test the path is just the md5 name """
