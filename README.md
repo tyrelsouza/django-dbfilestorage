@@ -54,6 +54,7 @@ I will sign everything with 0x769A1BC78A2DDEE2
 
 ## CHANGELOG
 
+- 2017-01-20 [Tyrel Souza] Make sure migrations is actually there.
 - 2017-01-20 [Tyrel Souza] Split filename and filehash.
 - 2016-12-09 [Tyrel Souza] Add signing key to readme.
 - 2016-12-09 [Tyrel Souza] Update Tests, add some cleanup.
