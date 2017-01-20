@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
 from .models import DBFile
@@ -12,7 +13,12 @@ def show_file(request, name):
 
         :return HttpResponse: Rendered file
     """
-    dbf = get_object_or_404(DBFile, pk=name)
-    return HttpResponse(
-        dbf.b64.decode('base64'),
-        content_type=dbf.content_type)
+    dbf = DBFile.objects.filter(Q(name=name)|Q(filehash=name))
+    if dbf.exists():
+        response = HttpResponse(
+            dbf[0].b64.decode('base64'),
+            content_type=dbf[0].content_type)
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+            dbf[0].name)
+        return response
+    raise Http404

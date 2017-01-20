@@ -30,14 +30,14 @@ class DBFileTest(TestCase):
 
     def test_upload(self):
         """ Test that the file storage uploads and puts in DB Properly """
-        self.assertTrue(DBFile.objects.filter(name=self.md5).exists())
+        self.assertTrue(DBFile.objects.filter(filehash=self.md5).exists())
 
     def test_content_file(self):
         """ Test that this code works with ContentFile as well """
         content_file = ContentFile(u"ΑΔΔGΕΝΕ")
         content_file_md5 = hashlib.md5(u"ΑΔΔGΕΝΕ".encode('utf8')).hexdigest()
         default_storage.save("unicode", content_file)
-        unicode_file = DBFile.objects.get(name=content_file_md5)
+        unicode_file = DBFile.objects.get(filehash=content_file_md5)
         self.assertEqual(unicode(unicode_file),
             "{} <application/octet-stream>".format(content_file_md5))
 
@@ -50,7 +50,7 @@ class DBFileTest(TestCase):
     def test_equality(self):
         """ Test that the DB entry matches what is expected from the file """
         with open(self.filepath, 'rb') as f:
-            dbf = DBFile.objects.get(name=self.md5)
+            dbf = DBFile.objects.get(filehash=self.md5)
             self.assertEqual(dbf.b64.decode("base64"), f.read())
             self.assertEqual(dbf.content_type, 'image/jpeg')
 
@@ -66,9 +66,9 @@ class DBFileTest(TestCase):
 
     def test_delete(self):
         """ Test Deletion """
-        self.assertTrue(DBFile.objects.filter(name=self.md5).exists())
+        self.assertTrue(DBFile.objects.filter(filehash=self.md5).exists())
         default_storage.delete(self.md5)
-        self.assertFalse(DBFile.objects.filter(name=self.md5).exists())
+        self.assertFalse(DBFile.objects.filter(filehash=self.md5).exists())
         # Also test that calling delete on something that doesn't exist,
         # errors silently
         self.assertFalse(DBFile.objects.filter(name="Nothing").exists())
@@ -91,9 +91,18 @@ class DBFileTest(TestCase):
 
     def test_view(self):
         client = Client()
-        url = default_storage.url(self.md5)
+        # check it works for both md5 and filename
+        for param in (self.md5, self.filename):
+            url = default_storage.url(param)
+            resp = client.get(url)
+            self.assertEqual(resp.status_code, 200)
+            
+    def test_view_fails(self):
+        client = Client()
+        url = default_storage.url("failure")
         resp = client.get(url)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
+
 
     def test_admin(self):
         my_admin = User.objects.create_superuser(
