@@ -34,6 +34,7 @@ setup(
     license="MIT License",
     packages=[
         "dbfilestorage",
+        "dbfilestorage.migrations",
     ],
     include_package_data=True,
     install_requires=[
