@@ -27,17 +27,18 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AlterField(
+            model_name='dbfile',
+            name='name',
+            field=models.CharField(max_length=100),
+        ),
         migrations.AddField(
             model_name='dbfile',
             name='filehash',
             field=models.CharField(default='filehash', max_length=32, primary_key=True, serialize=False),
             preserve_default=False,
         ),
-        migrations.AlterField(
-            model_name='dbfile',
-            name='name',
-            field=models.CharField(max_length=100),
-        ),
+
         migrations.RunPython(copy_filehash),
         migrations.RunPython(fix_filename),
     ]
