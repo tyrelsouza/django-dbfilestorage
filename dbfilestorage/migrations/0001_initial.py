@@ -17,8 +17,10 @@ class Migration(migrations.Migration):
             name='DBFile',
             fields=[
                 ('name', models.CharField(max_length=100,
-                                          primary_key=True,
                                           serialize=False)),
+                ('filehash', models.CharField(max_length=32,
+                    primary_key=True,
+                    serialize=False)),
                 ('content_type', models.CharField(max_length=100)),
                 ('b64', models.TextField()),
             ],
