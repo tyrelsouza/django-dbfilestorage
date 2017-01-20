@@ -4,6 +4,7 @@ import hashlib
 import os
 
 from django.db.transaction import atomic
+from django.db.models import Q
 from django.core.files.base import ContentFile
 from django.core.files.storage import Storage
 from django.core.urlresolvers import reverse
@@ -11,6 +12,10 @@ from django.core.urlresolvers import reverse
 from .models import DBFile
 
 L = logging.getLogger(__name__)
+
+
+def _get_object(param):
+    return DBFile.objects.filter(Q(name=param)|Q(filehash=param)).first()
 
 
 class DBFileStorage(Storage):
@@ -67,7 +72,8 @@ class DBFileStorage(Storage):
         return name
 
     def path(self, name):
-        return name
+        dbf = _get_object(name)
+        return dbf.name
 
     def delete(self, name):
         assert name, "The name argument is not allowed to be empty."

@@ -75,10 +75,10 @@ class DBFileTest(TestCase):
         default_storage.delete("Nothing")
 
     def test_path(self):
-        """ Test the path is just the md5 name """
+        """ Test the path is just the filename, when passed md5 and name """
         path = default_storage.path(self.md5)
-        self.assertEqual(self.md5, path)
-        self.assertNotIn(self.filename, path)
+        self.assertNotEqual(self.md5, path)
+        self.assertEqual(self.filename, path)
 
     def test_size(self):
         """ Ensure we can get the proper size """
