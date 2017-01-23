@@ -54,6 +54,8 @@ I will sign everything with 0x769A1BC78A2DDEE2
 
 ## CHANGELOG
 
+- 2017-01-23 [Tyrel Souza] Everything should return a "filename" even if it's generated. Make the filename be the hash + ext. (fall back to .txt)
+- 2017-01-20 [Tyrel Souza] Make path return None if no file
 - 2017-01-20 [Tyrel Souza] Make path return filename
 - 2017-01-20 [Tyrel Souza] Add another migration, and redo all the initial migrations.
 - 2017-01-20 [Tyrel Souza] Make sure migrations is actually there.

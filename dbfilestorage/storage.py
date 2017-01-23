@@ -29,7 +29,7 @@ class DBFileStorage(Storage):
     """
 
     def _open(self, name, mode='rb'):
-        the_file = DBFile.objects.get(pk=name)
+        the_file = _get_object(name)
         return ContentFile(the_file.b64.decode('base64'))
 
     @atomic
@@ -58,22 +58,23 @@ class DBFileStorage(Storage):
         # After we get the mimetype by name potentially, mangle it.
         filehash = hashlib.md5(read_data).hexdigest()
 
+        file_ext = os.path.splitext(name)[1]
+        if not file_ext:
+            file_ext = ".txt"
+        name = "".join((filehash, file_ext))
+
         # create the file, or just return name if the exact file already exists
-        if not DBFile.objects.filter(pk=name).exists():
+        if not DBFile.objects.filter(pk=filehash).exists():
             the_file = DBFile(
-                name=os.path.basename(name),
+                name=name,
                 filehash=filehash,
                 content_type=ct,
                 b64=b64)
             the_file.save()
-        return filehash
+        return name
 
     def get_available_name(self, name, max_length=None):
         return name
-
-    def path(self, name):
-        dbf = _get_object(name)
-        return dbf.name
 
     def delete(self, name):
         assert name, "The name argument is not allowed to be empty."
@@ -82,11 +83,13 @@ class DBFileStorage(Storage):
         DBFile.objects.filter(pk=name).delete()
 
     def exists(self, name):
-        return DBFile.objects.filter(pk=name).exists()
+        return DBFile.objects.filter(Q(name=name)|Q(filehash=name)).exists()
 
     def size(self, name):
-        dbf = DBFile.objects.get(pk=name)
+        dbf = _get_object(name)
         return len(dbf.b64)
 
     def url(self, name):
-        return reverse('dbstorage_file', args=(name,))
+        dbf = _get_object(name)
+        if dbf:
+            return reverse('dbstorage_file', args=(dbf.name,))

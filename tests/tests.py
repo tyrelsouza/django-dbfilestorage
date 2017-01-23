@@ -22,6 +22,8 @@ class DBFileTest(TestCase):
         self.filename = "kris.jpg"
         self.filepath = os.path.join(PROJECT_ROOT, "test_files", self.filename)
         self.md5 = hashlib.md5(open(self.filepath, 'rb').read()).hexdigest()
+        self.filehash_ext = self.md5 + ".jpg"
+
         self._upload()
 
     def _upload(self):
@@ -45,7 +47,7 @@ class DBFileTest(TestCase):
         """ Test that it won't make a new file if it already exists """
         # uploads once in setup already
         name2 = self._upload()
-        self.assertEqual(self.md5, name2)
+        self.assertEqual(self.filehash_ext, name2)
 
     def test_equality(self):
         """ Test that the DB entry matches what is expected from the file """
@@ -74,12 +76,6 @@ class DBFileTest(TestCase):
         self.assertFalse(DBFile.objects.filter(name="Nothing").exists())
         default_storage.delete("Nothing")
 
-    def test_path(self):
-        """ Test the path is just the filename, when passed md5 and name """
-        path = default_storage.path(self.md5)
-        self.assertNotEqual(self.md5, path)
-        self.assertEqual(self.filename, path)
-
     def test_size(self):
         """ Ensure we can get the proper size """
         size = default_storage.size(self.md5)
@@ -92,7 +88,7 @@ class DBFileTest(TestCase):
     def test_view(self):
         client = Client()
         # check it works for both md5 and filename
-        for param in (self.md5, self.filename):
+        for param in (self.md5, self.filehash_ext):
             url = default_storage.url(param)
             resp = client.get(url)
             self.assertEqual(resp.status_code, 200)
