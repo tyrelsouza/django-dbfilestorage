@@ -99,7 +99,6 @@ class DBFileTest(TestCase):
         resp = client.get(url)
         self.assertEqual(resp.status_code, 404)
 
-
     def test_admin(self):
         my_admin = User.objects.create_superuser(
             username='tester',
@@ -110,3 +109,8 @@ class DBFileTest(TestCase):
         url = reverse("admin:dbfilestorage_dbfile_changelist")
         resp = client.get(url)
         self.assertContains(resp, self.md5)
+
+    def test_mtime(self):
+        """ Ensure we can get the modified time """
+        mtime = default_storage.modified_time(self.filehash_ext)
+        self.assertIsNotNone(mtime)

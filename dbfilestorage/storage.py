@@ -93,3 +93,8 @@ class DBFileStorage(Storage):
         dbf = _get_object(name)
         if dbf:
             return reverse('dbstorage_file', args=(dbf.name,))
+        return reverse('dbstorage_file', args=(name,))
+
+    def modified_time(self, name):
+        dbf = _get_object(name)
+        return dbf.mtime

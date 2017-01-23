@@ -13,6 +13,7 @@ class DBFile(models.Model):
     # file data
     content_type = models.CharField(max_length=100)
     b64 = models.TextField()
+    mtime = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return u"{filehash} <{content_type}>".format(
