@@ -15,7 +15,7 @@ L = logging.getLogger(__name__)
 
 
 def _get_object(param):
-    return DBFile.objects.filter(Q(name=param)|Q(filehash=param)).first()
+    return DBFile.objects.filter(Q(name=param) | Q(filehash=param)).first()
 
 
 class DBFileStorage(Storage):
@@ -61,7 +61,6 @@ class DBFileStorage(Storage):
         file_ext = os.path.splitext(name)[1]
         if not file_ext:
             file_ext = ".txt"
-        name = "".join((filehash, file_ext))
 
         # create the file, or just return name if the exact file already exists
         if not DBFile.objects.filter(pk=filehash).exists():
@@ -83,7 +82,7 @@ class DBFileStorage(Storage):
         DBFile.objects.filter(pk=name).delete()
 
     def exists(self, name):
-        return DBFile.objects.filter(Q(name=name)|Q(filehash=name)).exists()
+        return DBFile.objects.filter(Q(name=name) | Q(filehash=name)).exists()
 
     def size(self, name):
         dbf = _get_object(name)

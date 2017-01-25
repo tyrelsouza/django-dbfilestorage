@@ -22,7 +22,6 @@ class DBFileTest(TestCase):
         self.filename = "kris.jpg"
         self.filepath = os.path.join(PROJECT_ROOT, "test_files", self.filename)
         self.md5 = hashlib.md5(open(self.filepath, 'rb').read()).hexdigest()
-        self.filehash_ext = self.md5 + ".jpg"
 
         self._upload()
 
@@ -47,7 +46,7 @@ class DBFileTest(TestCase):
         """ Test that it won't make a new file if it already exists """
         # uploads once in setup already
         name2 = self._upload()
-        self.assertEqual(self.filehash_ext, name2)
+        self.assertEqual(self.filepath, name2)
 
     def test_equality(self):
         """ Test that the DB entry matches what is expected from the file """
@@ -83,12 +82,12 @@ class DBFileTest(TestCase):
 
     def test_url(self):
         """ Test that the url returned is the md5 path not the filename """
-        self.assertIn(self.md5, default_storage.url(self.md5))
+        self.assertIn(self.filename, default_storage.url(self.md5))
 
     def test_view(self):
         client = Client()
         # check it works for both md5 and filename
-        for param in (self.md5, self.filehash_ext):
+        for param in (self.md5, self.filepath):
             url = default_storage.url(param)
             resp = client.get(url)
             self.assertEqual(resp.status_code, 200)
@@ -112,5 +111,5 @@ class DBFileTest(TestCase):
 
     def test_mtime(self):
         """ Ensure we can get the modified time """
-        mtime = default_storage.modified_time(self.filehash_ext)
+        mtime = default_storage.modified_time(self.filepath)
         self.assertIsNotNone(mtime)
