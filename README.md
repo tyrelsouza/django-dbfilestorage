@@ -45,7 +45,7 @@ class SomeClass(models.Model):
 - Different django and different python versions.
 
 ## Signing Key
-You can find my signing key at [TyrelSouza.com](https://tyrelsouza.com/blog/pgp-keys/)
+You can find my signing key at [TyrelSouza.com](https://tyrelsouza.com/koken/?/pages/pgp-keys/)
 
 I will sign everything with 0x769A1BC78A2DDEE2
 
