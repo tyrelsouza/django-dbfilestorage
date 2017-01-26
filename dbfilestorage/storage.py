@@ -63,7 +63,7 @@ class DBFileStorage(Storage):
             file_ext = ".txt"
 
         # create the file, or just return name if the exact file already exists
-        if not DBFile.objects.filter(pk=filehash).exists():
+        if not DBFile.objects.filter(filehash=filehash, name=name).exists():
             the_file = DBFile(
                 name=name,
                 filehash=filehash,

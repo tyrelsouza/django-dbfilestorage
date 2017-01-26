@@ -24,7 +24,7 @@ class CleanCommand(Command):
 
 setup(
     name="django-dbfilestorage",
-    version="0.5.1",
+    version="0.5.2",
     description="Database backed file storage for testing.",
     long_description="Database backed file storage for testing. Stores files as base64 encoded textfields.",
     author="Tyrel Souza",

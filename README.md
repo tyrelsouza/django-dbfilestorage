@@ -54,6 +54,7 @@ I will sign everything with 0x769A1BC78A2DDEE2
 
 ## CHANGELOG
 
+- 2017-01-26 [Tyrel Souza] Check filehash and filename, not just hash when checking if it needs to be saved.
 - 2017-01-25 [Tyrel Souza] Keeping Filename on upload.
 - 2017-01-23 [Tyrel Souza] Add Modified Time to storage support
 - 2017-01-23 [Tyrel Souza] Everything should return a "filename" even if it's generated. Make the filename be the hash + ext. (fall back to .txt)
