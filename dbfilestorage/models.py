@@ -7,8 +7,7 @@ class DBFile(models.Model):
     # This is kept as `name` and not something like `md5` because the file
     # operations pass around `name` as the identifier, so it's kept the same
     # to make sense.
-    name = models.CharField(max_length=100)
-    filehash = models.CharField(max_length=32, primary_key=True)
+    name = models.CharField(max_length=100, primary_key=True)
 
     # file data
     content_type = models.CharField(max_length=100)
@@ -16,8 +15,8 @@ class DBFile(models.Model):
     mtime = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return u"{filehash} <{content_type}>".format(
-            filehash=self.filehash, content_type=self.content_type)
+        return u"{name} <{content_type}>".format(
+            name=self.name, content_type=self.content_type)
 
     def save(self, **kwargs):
         if self.content_type is None:

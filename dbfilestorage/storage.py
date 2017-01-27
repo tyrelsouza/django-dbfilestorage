@@ -1,6 +1,5 @@
 import mimetypes
 import logging
-import hashlib
 import os
 
 from django.db.transaction import atomic
@@ -15,7 +14,7 @@ L = logging.getLogger(__name__)
 
 
 def _get_object(param):
-    return DBFile.objects.filter(Q(name=param) | Q(filehash=param)).first()
+    return DBFile.objects.filter(name=param).first()
 
 
 class DBFileStorage(Storage):
@@ -55,21 +54,12 @@ class DBFileStorage(Storage):
         # USE mimetypes.guess_type as an attempt at getting the content type.
         ct = mimetypes.guess_type(name)[0]
 
-        # After we get the mimetype by name potentially, mangle it.
-        filehash = hashlib.md5(read_data).hexdigest()
-
-        file_ext = os.path.splitext(name)[1]
-        if not file_ext:
-            file_ext = ".txt"
-
         # create the file, or just return name if the exact file already exists
-        if not DBFile.objects.filter(filehash=filehash, name=name).exists():
-            the_file = DBFile(
+        if not DBFile.objects.filter(name=name).exists():
+            the_file = DBFile.objects.create(
                 name=name,
-                filehash=filehash,
                 content_type=ct,
                 b64=b64)
-            the_file.save()
         return name
 
     def get_available_name(self, name, max_length=None):
@@ -82,7 +72,7 @@ class DBFileStorage(Storage):
         DBFile.objects.filter(pk=name).delete()
 
     def exists(self, name):
-        return DBFile.objects.filter(Q(name=name) | Q(filehash=name)).exists()
+        return DBFile.objects.filter(name=name).exists()
 
     def size(self, name):
         dbf = _get_object(name)

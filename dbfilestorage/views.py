@@ -13,12 +13,10 @@ def show_file(request, name):
 
         :return HttpResponse: Rendered file
     """
-    dbf = DBFile.objects.filter(Q(name=name)|Q(filehash=name))
-    if dbf.exists():
-        response = HttpResponse(
-            dbf[0].b64.decode('base64'),
-            content_type=dbf[0].content_type)
-        response['Content-Disposition'] = 'attachment; filename="{}"'.format(
-            dbf[0].name)
-        return response
-    raise Http404
+    dbf = get_object_or_404(DBFile, name=name)
+    response = HttpResponse(
+        dbf.b64.decode('base64'),
+        content_type=dbf.content_type)
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+        dbf.name)
+    return response
