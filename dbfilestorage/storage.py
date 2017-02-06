@@ -69,7 +69,7 @@ class DBFileStorage(Storage):
         assert name, "The name argument is not allowed to be empty."
         # name is the Pk, so it will be unique, deleting on the QS so
         # that it fails silently if the file doesn't exist.
-        DBFile.objects.filter(pk=name).delete()
+        DBFile.objects.filter(name=name).delete()
 
     def exists(self, name):
         return DBFile.objects.filter(name=name).exists()

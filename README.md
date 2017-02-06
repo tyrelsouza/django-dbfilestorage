@@ -51,6 +51,7 @@ I will sign everything with 0x769A1BC78A2DDEE2
 
 ## CHANGELOG
 
+- 2017-02-06 [Tyrel Souza] Set primary key to `id` not `name`, this involves a lot of migrations, so I've kept them in multiple files 
 - 2017-01-27 [Tyrel Souza] Get rid of filehash
 - 2017-01-26 [Tyrel Souza] Check filehash and filename, not just hash when checking if it needs to be saved.
 - 2017-01-25 [Tyrel Souza] Keeping Filename on upload.
