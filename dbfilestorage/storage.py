@@ -55,11 +55,17 @@ class DBFileStorage(Storage):
         ct = mimetypes.guess_type(name)[0]
 
         # create the file, or just return name if the exact file already exists
-        if not DBFile.objects.filter(name=name).exists():
-            the_file = DBFile.objects.create(
+        the_file = DBFile.objects.filter(name=name).first()
+        if not the_file:
+            DBFile.objects.create(
                 name=name,
                 content_type=ct,
                 b64=b64)
+        else:
+            the_file.content_type=ct
+            the_file.b64 = b64
+            the_file.save()
+
         return name
 
     def get_available_name(self, name, max_length=None):

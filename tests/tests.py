@@ -33,7 +33,7 @@ class DBFileTest(TestCase):
 
     def test_content_file(self):
         """ Test that this code works with ContentFile as well """
-        content_file = ContentFile(u"ΑΔΔGΕΝΕ")
+        content_file = ContentFile(u"ƊBStørage")
         default_storage.save("unicode", content_file)
         unicode_file = DBFile.objects.get(name="unicode")
         self.assertEqual(unicode(unicode_file),
@@ -76,6 +76,33 @@ class DBFileTest(TestCase):
         """ Ensure we can get the proper size """
         size = default_storage.size(self.filepath)
         self.assertGreater(size, 0)
+
+    def test_raw_save(self):
+        CONTENT_DATA_1 = u"Here's some stuff! ƊBStørage - ONE"
+        CONTENT_DATA_2 = u"Here's some stuff! ƊBStørage - TWO"
+        FILE_NAME = "saveable.txt"
+        self.assertFalse(DBFile.objects.filter(name=FILE_NAME).exists())
+
+        # -- Save to a _new_ file
+        content_file = ContentFile(CONTENT_DATA_1.encode("utf-8"))
+        default_storage.save(FILE_NAME, content_file)
+        self.assertTrue(DBFile.objects.filter(name=FILE_NAME).exists())
+
+        with default_storage.open(FILE_NAME, "rb") as f:
+            read_back = f.read().decode("utf-8")
+        self.assertEqual(read_back, CONTENT_DATA_1)
+
+        # -- Save to an _existing_ file
+        content_file = ContentFile(CONTENT_DATA_2.encode("utf-8"))
+        default_storage.save(FILE_NAME, content_file)
+        self.assertTrue(DBFile.objects.filter(name=FILE_NAME).exists())
+        with default_storage.open(FILE_NAME, "rb") as f:
+            read_back = f.read().decode("utf-8")
+        self.assertEqual(read_back, CONTENT_DATA_2)
+
+        # -- Clean up after ourselves
+        default_storage.delete(FILE_NAME)
+        self.assertFalse(DBFile.objects.filter(name=FILE_NAME).exists())
 
     def test_url(self):
         """ Test that the url returned is the filename """
