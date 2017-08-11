@@ -46,7 +46,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Django DBFileStorage'
-copyright = u'2016, Tyrel Souza'
+copyright = u'2017, Tyrel Souza'
 author = u'Tyrel Souza'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -54,7 +54,7 @@ author = u'Tyrel Souza'
 # built documents.
 #
 # The short X.Y version.
-version = u'0.9.0'
+version = u'0.9.1'
 # The full version, including alpha/beta/rc tags.
 release = version
 

@@ -58,8 +58,28 @@ It gets the file object from the database referenced by the md5 (the
 filefield.url() will provide this) automatically. It then returns a
 HttpResponse of the decoded file and content type. Very straightforward.
 
+
+Listing Directories
+~~~~~~~~~~~~~~~~~~~
+Because there is no such thing as a "directory" in DBFileStorage, a query is made
+for all names that start with the passed in string.
+
+Improvements could be made to pass in anything else that has a slash into the first
+tuple and everything that doesn't in the second, but for this version I have chosen
+just to place everything into the first tuple.
+
+.. code:: python
+
+    DBFileStorage.listdir("path/here")
+    # Returns
+    ([], ["path/here/files.txt", "path/here/that/match.txt",])
+
+
 Other operations
 ~~~~~~~~~~~~~~~~
 
 Everything else, such as `.path()`, `.delete()`, `.size()`, `.exists()` are
 exactly the same, in usage as normal.
+
+
+
