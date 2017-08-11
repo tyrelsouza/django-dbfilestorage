@@ -21,11 +21,14 @@ class DBFileTest(TestCase):
         self.filename = "kris.jpg"
         self.filepath = os.path.join(PROJECT_ROOT, "test_files", self.filename)
 
-        self._upload()
+        self._upload(self.filepath)
 
-    def _upload(self):
+    def _upload(self, name=None):
+        if name is None:
+            name = self.filepath
+
         with open(self.filepath, 'rb') as f:
-            return default_storage.save(self.filepath, f)
+            return default_storage.save(name, f)
 
     def test_upload(self):
         """ Test that the file storage uploads and puts in DB Properly """
@@ -113,7 +116,7 @@ class DBFileTest(TestCase):
         url = default_storage.url(self.filepath)
         resp = client.get(url)
         self.assertEqual(resp.status_code, 200)
-            
+
     def test_view_fails(self):
         client = Client()
         url = default_storage.url("failure")
@@ -135,3 +138,19 @@ class DBFileTest(TestCase):
         """ Ensure we can get the modified time """
         mtime = default_storage.modified_time(self.filepath)
         self.assertIsNotNone(mtime)
+
+    def test_listdir(self):
+        """ Make sure listdir works, and only returns things under 'dirname' """
+        names = [
+            u'dirname/kris.jpg',
+            u'dirname/kris2.jpg',
+            u'dirname/kris3.jpg']
+
+        for name in names:
+            self._upload(name=name)
+
+        self.assertEqual(
+            default_storage.listdir("dirname"),
+            ([], names)
+        )
+

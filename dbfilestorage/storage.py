@@ -93,3 +93,12 @@ class DBFileStorage(Storage):
     def modified_time(self, name):
         dbf = _get_object(name)
         return dbf.mtime
+
+    def listdir(self, path):
+        dirs = []  # this doesn't support dirs, so just empty list
+        files = sorted(DBFile.objects.filter(
+                    name__startswith=path
+                ).values_list(
+                    "name", flat=True
+                ))
+        return (dirs, files)
