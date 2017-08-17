@@ -47,6 +47,10 @@ class DBFileStorage(Storage):
         """
         if hasattr(content.file, "read"):
             read_data = content.file.read()
+            if not read_data:
+                # If it's empty, try to seek once.
+                content.file.seek(0)
+                read_data = content.file.read()
         else:
             read_data = content.file.encode('utf8')
         b64 = read_data.encode('base64')
