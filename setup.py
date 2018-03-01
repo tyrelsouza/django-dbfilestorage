@@ -21,10 +21,11 @@ class CleanCommand(Command):
         os.system('rm -vrf ./build ./dist ./*.pyc ./*.tgz ./*.egg-info')
         os.system('rm -vrf htmlcov .coverage')
         os.system('rm -vrf .DS_Store')
+        os.system('rm -vrf .tox')
 
 setup(
     name="django-dbfilestorage",
-    version="0.9.2",
+    version="0.9.3",
     description="Database backed file storage for testing.",
     long_description="Database backed file storage for testing. Stores files as base64 encoded textfields.",
     author="Tyrel Souza",
@@ -38,11 +39,12 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "Django>=1.8.0",
+        "Django==1.11.10",
     ],
     tests_require=[
         "nose",
         "coverage",
+        "future",
     ],
     zip_safe=False,
     test_suite="tests.runtests.start",

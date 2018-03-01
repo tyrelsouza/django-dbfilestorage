@@ -1,3 +1,7 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
+import base64
+
 from django.http import HttpResponse, Http404
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -15,7 +19,7 @@ def show_file(request, name):
     """
     dbf = get_object_or_404(DBFile, name=name)
     response = HttpResponse(
-        dbf.b64.decode('base64'),
+        base64.b64decode(dbf.b64),
         content_type=dbf.content_type)
     response['Content-Disposition'] = 'attachment; filename="{}"'.format(
         dbf.name)

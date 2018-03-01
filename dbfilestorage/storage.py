@@ -1,3 +1,6 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
+import base64
 import mimetypes
 import logging
 import os
@@ -6,7 +9,7 @@ from django.db.transaction import atomic
 from django.db.models import Q
 from django.core.files.base import ContentFile
 from django.core.files.storage import Storage
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 
 from .models import DBFile
 
@@ -29,7 +32,7 @@ class DBFileStorage(Storage):
 
     def _open(self, name, mode='rb'):
         the_file = _get_object(name)
-        return ContentFile(the_file.b64.decode('base64'))
+        return ContentFile(base64.b64decode(the_file.b64))
 
     @atomic
     def _save(self, name, content, max_length=None):
@@ -43,8 +46,13 @@ class DBFileStorage(Storage):
            Then it checks if the file exists and if it doesn't, it will create
            the entry in the database.
 
+           :param name: file name to save
+           :param content: Content object, where content.file is bytes
+
            :return str: the name(md5) to look up the file by.
         """
+
+        # TODO: Make this conditional better
         if hasattr(content.file, "read"):
             read_data = content.file.read()
             if not read_data:
@@ -52,8 +60,9 @@ class DBFileStorage(Storage):
                 content.file.seek(0)
                 read_data = content.file.read()
         else:
-            read_data = content.file.encode('utf8')
-        b64 = read_data.encode('base64')
+            read_data = content.file
+
+        b64 = base64.b64encode(read_data)
 
         # USE mimetypes.guess_type as an attempt at getting the content type.
         ct = mimetypes.guess_type(name)[0]
@@ -91,8 +100,8 @@ class DBFileStorage(Storage):
     def url(self, name):
         dbf = _get_object(name)
         if dbf:
-            return reverse('dbstorage_file', args=(dbf.name,))
-        return reverse('dbstorage_file', args=(name,))
+            return reverse_lazy('dbstorage_file', args=(dbf.name,))
+        return reverse_lazy('dbstorage_file', args=(name,))
 
     def modified_time(self, name):
         dbf = _get_object(name)

@@ -1,11 +1,4 @@
-"""
-WSGI config for tests project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.10/howto/deployment/wsgi/
-"""
+from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 

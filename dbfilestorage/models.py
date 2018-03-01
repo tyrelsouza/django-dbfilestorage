@@ -1,6 +1,10 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
 from django.db import models
+from future.utils import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class DBFile(models.Model):
     """ Model to store and access uploaded files """
 
@@ -11,7 +15,7 @@ class DBFile(models.Model):
     b64 = models.TextField()
     mtime = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{name} <{content_type}>".format(
             name=self.name, content_type=self.content_type)
 

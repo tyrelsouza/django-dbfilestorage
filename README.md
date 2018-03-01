@@ -7,6 +7,18 @@ Easy to use for testing remote storages when you're in a transition stage betwee
 
 Intended to be used in tests, never in production.
 
+## TESTING
+
+I use Pyenv and Tox to support Python2.7.13 and Python3.6.3
+
+```
+pip install -r requirements-dev.txt
+pyenv install 2.7.13 3.5.4 3.6.3
+tox
+```
+
+Or you can run individually with your shell python using `python setup.py test`
+
 ## INSTALLATION
 
 ```
@@ -42,7 +54,7 @@ class SomeClass(models.Model):
 ## TODO
 
 - Test that this works on a fake model, not just the storage file.
-- Different django and different python versions.
+- Different django versions.
 
 ## Signing Key
 You can find my signing key at [TyrelSouza.com](https://tyrelsouza.com/koken/?/pages/pgp-keys/)
@@ -51,8 +63,9 @@ I will sign everything with 0x769A1BC78A2DDEE2
 
 ## CHANGELOG
 
+- 2018-02-01 [Tyrel Souza] Bump versions to django 1.11 and testing with Python3
 - 2017-05-10 [Pamela McA'Nulty] Have save overwrite existing files
-- 2017-02-06 [Tyrel Souza] Set primary key to `id` not `name`, this involves a lot of migrations, so I've kept them in multiple files 
+- 2017-02-06 [Tyrel Souza] Set primary key to `id` not `name`, this involves a lot of migrations, so I've kept them in multiple files
 - 2017-01-27 [Tyrel Souza] Get rid of filehash
 - 2017-01-26 [Tyrel Souza] Check filehash and filename, not just hash when checking if it needs to be saved.
 - 2017-01-25 [Tyrel Souza] Keeping Filename on upload.

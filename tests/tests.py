@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+import base64
 import os
 
 from dbfilestorage.models import DBFile
@@ -9,6 +11,7 @@ from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 from django.test import TestCase, Client
 from django.test.utils import override_settings
+
 
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -36,10 +39,10 @@ class DBFileTest(TestCase):
 
     def test_content_file(self):
         """ Test that this code works with ContentFile as well """
-        content_file = ContentFile(u"ƊBStørage")
+        content_file = ContentFile(b"\\u018aBSt\\xf8rage")
         default_storage.save("unicode", content_file)
         unicode_file = DBFile.objects.get(name="unicode")
-        self.assertEqual(unicode(unicode_file),
+        self.assertEqual(str(unicode_file),
             "unicode <application/octet-stream>")
 
     def test_no_duplicate_upload(self):
@@ -52,7 +55,7 @@ class DBFileTest(TestCase):
         """ Test that the DB entry matches what is expected from the file """
         with open(self.filepath, 'rb') as f:
             dbf = DBFile.objects.get(name=self.filepath)
-            self.assertEqual(dbf.b64.decode("base64"), f.read())
+            self.assertEqual(base64.b64decode(dbf.b64), f.read())
             self.assertEqual(dbf.content_type, 'image/jpeg')
 
     def test_open(self):
@@ -62,7 +65,7 @@ class DBFileTest(TestCase):
             self.assertEqual(dbf.read(), f.read())
 
     def test_exists(self):
-        """ Test that the storage mechanism can check existance """
+        """ Test that the storage mechanism can check existence """
         self.assertTrue(default_storage.exists(self.filepath))
 
     def test_delete(self):
@@ -81,8 +84,8 @@ class DBFileTest(TestCase):
         self.assertGreater(size, 0)
 
     def test_raw_save(self):
-        CONTENT_DATA_1 = u"Here's some stuff! ƊBStørage - ONE"
-        CONTENT_DATA_2 = u"Here's some stuff! ƊBStørage - TWO"
+        CONTENT_DATA_1 = "Here's some stuff! ƊBStørage - ONE"
+        CONTENT_DATA_2 = "Here's some stuff! ƊBStørage - TWO"
         FILE_NAME = "saveable.txt"
         self.assertFalse(DBFile.objects.filter(name=FILE_NAME).exists())
 
@@ -142,9 +145,9 @@ class DBFileTest(TestCase):
     def test_listdir(self):
         """ Make sure listdir works, and only returns things under 'dirname' """
         names = [
-            u'dirname/kris.jpg',
-            u'dirname/kris2.jpg',
-            u'dirname/kris3.jpg']
+            'dirname/kris.jpg',
+            'dirname/kris2.jpg',
+            'dirname/kris3.jpg']
 
         for name in names:
             self._upload(name=name)

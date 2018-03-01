@@ -1,3 +1,14 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/django-dbfilestorage
+    docker:
+      - image: themattrix/tox
+    steps:
+      - checkout
+      - run: tox
+
 test:
   post:
     - bash <(curl -s https://codecov.io/bash)
