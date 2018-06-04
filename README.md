@@ -63,6 +63,7 @@ I will sign everything with 0x769A1BC78A2DDEE2
 
 ## CHANGELOG
 
+- 2018-06-04 [Tyrel Souza] Move to gitlab, bump to 1.0.1
 - 2018-03-01 [Tyrel Souza] Release Version 1.0.0
 - 2018-02-01 [Tyrel Souza] Bump versions to django 1.11 and testing with Python3
 - 2017-05-10 [Pamela McA'Nulty] Have save overwrite existing files

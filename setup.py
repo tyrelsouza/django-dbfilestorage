@@ -25,13 +25,13 @@ class CleanCommand(Command):
 
 setup(
     name="django-dbfilestorage",
-    version="1.0.0",
+    version="1.0.1",
     description="Database backed file storage for testing.",
     long_description="Database backed file storage for testing. Stores files as base64 encoded textfields.",
     author="Tyrel Souza",
     author_email="tyrelsouza@gmail.com",
-    url="https://github.com/tyrelsouza/django-dbfilestorage",
-    download_url="https://github.com/tyrelsouza/django-dbfilestorage.git",
+    url="https://gitlab.com/tyrelsouza/django-dbfilestorage",
+    download_url="https://gitlab.com/tyrelsouza/django-dbfilestorage.git",
     license="MIT License",
     packages=[
         "dbfilestorage",
